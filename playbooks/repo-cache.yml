@@ -1,0 +1,7 @@
+---
+- name: provision the repo-cache
+  hosts: repo-cache
+  sudo: True
+  gather_facts: True
+  roles:
+    - repo-cache

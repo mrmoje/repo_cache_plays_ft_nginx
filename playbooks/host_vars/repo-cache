@@ -1,0 +1,48 @@
+cache_device: /dev/sdb
+keys_zone_name: "repository_cache"
+proxy_cache_path: "/var/repo_mirror"
+proxy_cache_keys_zone: "{{ keys_zone_name }}:50m"
+proxy_cache_inactive_time: "14d"
+proxy_cache_valid_code: "200"
+proxy_cache_levels: "1:2"
+proxy_cache_max_size: "100g"
+proxy_index_path: "{{ proxy_cache_path }}/index_data"
+
+proxy_cache_use_stale:
+  - error
+  - timeout
+  - invalid_header
+  - updating
+
+proxy_next_upstream:
+  - error timeout
+  - invalid_header
+  - http_500
+  - http_502
+  - http_503
+  - http_504
+
+mirrors:
+  - name: "ubuntu"
+    frontend_uri: "/ubuntu"
+    sync_hour: 0
+    upstreams:
+      main: "ke.archive.ubuntu.com"
+      backups:
+        - "archive.ubuntu.com"
+
+  - name: "debian"
+    frontend_uri: "/debian"
+    sync_hour: 2
+    upstreams:
+      main: "debian.mirror.ac.za"
+      backups:
+        - "mirror.liquidtelecom.com"
+
+  - name: "centos"
+    frontend_uri: "/centos"
+    sync_hour: 4
+    upstreams:
+      main: "mirror.liquidtelecom.com"
+      backups:
+        - "centos.mirror.co.za"

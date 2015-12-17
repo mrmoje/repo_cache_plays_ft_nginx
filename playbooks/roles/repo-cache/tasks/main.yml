@@ -1,0 +1,47 @@
+---
+- name: ensure required packages are installed
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 600
+  with_items:
+    - nginx
+
+- name: create cache dir
+  file:
+    state: directory
+    path: "{{ proxy_cache_path }}"
+    owner: www-data
+    group: www-data
+    mode: 0755
+
+- name: copy nginx configuration
+  template:
+    src: repo-cache.conf
+    dest: /etc/nginx/sites-available/repo-cache.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: link nginx site configuration to enabled sites
+  file:
+    src: /etc/nginx/sites-available/repo-cache.conf
+    dest: /etc/nginx/sites-enabled/repo-cache.conf
+    state: link
+
+- name: ensure default configs are deleted
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/nginx/sites-enabled/default
+    - /etc/nginx/sites-available/default
+
+- name: ensure nginx is restarted
+  service:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+  with_items:
+    - nginx
