@@ -45,4 +45,4 @@ mirrors:
     upstreams:
       main: "mirror.liquidtelecom.com"
       backups:
-        - "centos.mirror.co.za"
+        - "mirror.centos.org"

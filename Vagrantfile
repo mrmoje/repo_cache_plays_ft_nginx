@@ -24,7 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "ubuntu" do |machine|
     machine.vm.network :private_network, ip: "10.64.0.3",
       :netmask => "255.255.0.0"
-    machine.vm.hostname = "client1"
+    machine.vm.hostname = "ubuntu"
     machine.vm.provider :virtualbox do |v, o|
       o.vm.box = "ubuntu/trusty64"
       o.vm.provision "shell", inline: %(

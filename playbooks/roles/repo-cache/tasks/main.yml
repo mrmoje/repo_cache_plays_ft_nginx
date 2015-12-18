@@ -7,6 +7,7 @@
     cache_valid_time: 600
   with_items:
     - nginx
+    - avahi-daemon
 
 - name: create cache dir
   file:
